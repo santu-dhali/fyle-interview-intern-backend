@@ -1,3 +1,5 @@
+from core.models.assignments import GradeEnum
+
 def test_get_assignments_teacher_1(client, h_teacher_1):
     response = client.get(
         '/teacher/assignments',
@@ -99,3 +101,18 @@ def test_grade_assignment_draft_assignment(client, h_teacher_1):
     data = response.json
 
     assert data['error'] == 'FyleError'
+    
+def test_grade_assignment(client, h_teacher_1):
+    """
+    failure case: only a submitted assignment can be graded
+    """
+    response = client.post(
+        '/teacher/assignments/grade',
+        headers=h_teacher_1
+        , json={
+            "id": 1,
+            "grade": "A"
+        }
+    )
+
+    assert response.status_code == 400
