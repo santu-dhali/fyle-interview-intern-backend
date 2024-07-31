@@ -20,6 +20,21 @@ def ready():
 
     return response
 
+@app.route('/trigger-fyle-error')
+def trigger_fyle_error():
+    raise FyleError(status_code=400, message='This is a FyleError')
+
+@app.route('/trigger-validation-error')
+def trigger_validation_error():
+    raise ValidationError('This is a ValidationError')
+
+@app.route('/trigger-integrity-error')
+def trigger_integrity_error():
+    raise IntegrityError(statement='dummy statement', params='dummy params', orig='This is an IntegrityError')
+
+@app.route('/trigger-http-exception')
+def trigger_http_exception():
+    raise HTTPException(description='This is an HTTPException', response=None)
 
 @app.errorhandler(Exception)
 def handle_error(err):
